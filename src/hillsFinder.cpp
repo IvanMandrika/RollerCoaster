@@ -32,17 +32,17 @@ double median(std::vector<float> data) {
 
 // without copy elision for reusability
 std::vector<std::pair<int32_t, int32_t> > findHills(const std::vector<float> &data, const int32_t minWidth,
-                                                    const int32_t maxWidth) {
+                                                    const int32_t maxWidth, const int32_t delta) {
   std::vector<std::pair<int32_t, int32_t> > hills;
   const double med = median(data);
   bool inHill = false;
   int32_t left = 0;
 
   for (int32_t i = 0; i < data.size(); ++i) {
-    if (!inHill && data[i] > med) {
+    if (!inHill && data[i] > med + static_cast<float>(delta) / 2) {
       inHill = true;
       left = i;
-    } else if (inHill && data[i] <= med) {
+    } else if (inHill && data[i] <= med - static_cast<float>(delta) / 2) {
       int32_t right = i;
       if (const int32_t width = right - left;
         width >= minWidth && width <= maxWidth) {
